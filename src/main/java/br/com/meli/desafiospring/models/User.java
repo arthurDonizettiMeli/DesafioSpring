@@ -5,6 +5,7 @@ import br.com.meli.desafiospring.enums.UserType;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -22,6 +23,9 @@ public class User {
 
     @NotNull
     private UserType userType;
+
+    @ManyToMany
+    private List<UserFollowers> userFollowers;
 
     public User() {
     }
@@ -48,5 +52,9 @@ public class User {
 
     public void setUserType(UserType userType) {
         this.userType = userType;
+    }
+
+    public List<UserFollowers> getUserFollowers() {
+        return userFollowers;
     }
 }
