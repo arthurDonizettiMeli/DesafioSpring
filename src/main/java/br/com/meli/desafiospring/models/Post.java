@@ -21,14 +21,14 @@ public class Post {
   @NotNull
   private LocalDate date;
 
-  private List<Product> detail;
+  private Product detail;
 
-  @OneToMany(targetEntity=Product.class, mappedBy="id",cascade=CascadeType.ALL, fetch = FetchType.LAZY)
-  public List<Product> getDetail() {
+  @OneToOne(targetEntity=Product.class, mappedBy="id",cascade=CascadeType.ALL, fetch = FetchType.LAZY)
+  public Product getDetail() {
     return detail;
   }
 
-  public void setDetail(List<Product> detail) {
+  public void setDetail(Product detail) {
     this.detail = detail;
   }
 
