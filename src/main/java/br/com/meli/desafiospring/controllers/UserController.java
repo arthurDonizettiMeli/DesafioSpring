@@ -1,25 +1,51 @@
 package br.com.meli.desafiospring.controllers;
 
+import br.com.meli.desafiospring.enums.UserType;
 import br.com.meli.desafiospring.models.User;
+import br.com.meli.desafiospring.models.UserFollowers;
 import br.com.meli.desafiospring.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/users")
 public class UserController {
 
     @Autowired
     UserService userService;
 
-    @GetMapping("/users")
-    public ResponseEntity<List<User>> getUsers() {
-        return ResponseEntity.ok(userService.getTestUsers());
+    @PostMapping(value = "/{userId}/follow/{userIdToFollow}")
+    public ResponseEntity follow(@PathVariable(value = "userId") int userId, @PathVariable(value = "userIdToFollow") int userIdToFollow) {
+        User user = userService.findById(userId);
+
+        if (userId == userIdToFollow)
+            return ResponseEntity.status(400).build();
+        if (user.getUserType().equals(UserType.SELLER))
+            return ResponseEntity.status(400).build();
+        if (userService.findById(userIdToFollow) == null)
+            return ResponseEntity.status(400).build();
+        if (user.getUserFollowers().stream().anyMatch(u -> u.getFollowedId() == userIdToFollow))
+            return ResponseEntity.status(400).build();
+        UserFollowers userFollowers = userService.follow(new UserFollowers(userIdToFollow, userId));
+        user.getUserFollowers().add(userFollowers);
+        userService.save(user);
+        return ResponseEntity.status(200).build();
     }
 
+    @GetMapping(value = "/test")
+    public ResponseEntity<List<User>> test() {
+        User user1 = new User();
+        user1.setUsername("comprador1");
+        user1.setUserType(UserType.BUYER);
+        userService.save(user1);
+        User user2 = new User();
+        user2.setUsername("vendedor1");
+        user2.setUserType(UserType.SELLER);
+        userService.save(user2);
+        List<User> all = userService.findAll();
+        return ResponseEntity.ok(all);
+    }
 }
