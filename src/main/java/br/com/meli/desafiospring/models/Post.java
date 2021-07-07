@@ -3,7 +3,6 @@ package br.com.meli.desafiospring.models;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
-import java.util.List;
 
 @Entity
 @Table(name = "posts")
@@ -25,13 +24,18 @@ public class Post {
   @JoinColumn(name = "product_id")
   private Product product;
 
+  public Post() {
+  }
+
   public Product getProduct() {
     return product;
   }
 
-  public void setProduct(Product detail) {
-    this.product = detail;
-  }
+  @NotNull
+  private Integer category;
+
+  @NotNull
+  private Double price;
 
   public Integer getId() {
     return id;
@@ -55,5 +59,21 @@ public class Post {
 
   public void setDate(LocalDate date) {
     this.date = date;
+  }
+
+  public Integer getCategory() {
+    return category;
+  }
+
+  public void setCategory(Integer category) {
+    this.category = category;
+  }
+
+  public Double getPrice() {
+    return price;
+  }
+
+  public void setPrice(Double price) {
+    this.price = price;
   }
 }
