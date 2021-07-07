@@ -1,11 +1,13 @@
 package br.com.meli.desafiospring.dtos;
 
 
+import br.com.meli.desafiospring.models.Product;
+
 import java.util.Date;
 
 public class ProductDTO {
 
-    private Integer id_post;
+    private Integer product_id;
     private String productName;
     private String type;
     private String brand;
@@ -15,12 +17,12 @@ public class ProductDTO {
     public ProductDTO() {
     }
 
-    public Integer getId_post() {
-        return id_post;
+    public Integer getProduct_id() {
+        return product_id;
     }
 
-    public void setId_post(Integer id_post) {
-        this.id_post = id_post;
+    public void setProduct_id(Integer product_id) {
+        this.product_id = product_id;
     }
 
     public String getProductName() {
@@ -61,5 +63,16 @@ public class ProductDTO {
 
     public void setNotes(String notes) {
         this.notes = notes;
+    }
+
+    public Product toModel(ProductDTO productDTO) {
+        Product product = new Product();
+        product.setId(productDTO.getProduct_id());
+        product.setName(productDTO.getProductName());
+        product.setType(productDTO.getType());
+        product.setBrand(productDTO.getBrand());
+        product.setColor(productDTO.getColor());
+        product.setNotes(productDTO.getNotes());
+        return product;
     }
 }

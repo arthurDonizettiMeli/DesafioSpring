@@ -1,5 +1,7 @@
 package br.com.meli.desafiospring.models;
 
+import br.com.meli.desafiospring.dtos.ProductDTO;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -83,5 +85,16 @@ public class Product {
 
     public void setNotes(String notes) {
         this.notes = notes;
+    }
+
+    public ProductDTO toDTO(Product product) {
+        ProductDTO productDTO = new ProductDTO();
+        productDTO.setProduct_id(product.getId());
+        productDTO.setProductName(product.getName());
+        productDTO.setType(product.getType());
+        productDTO.setBrand(product.getBrand());
+        productDTO.setColor(product.getColor());
+        productDTO.setNotes(product.getNotes());
+        return productDTO;
     }
 }

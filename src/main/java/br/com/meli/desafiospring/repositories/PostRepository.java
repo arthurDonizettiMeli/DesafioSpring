@@ -9,5 +9,6 @@ import java.util.Optional;
 
 @Repository
 public interface PostRepository extends JpaRepository<Post, Integer> {
-  public Optional<List<Post>> getPostByUserIdAAndHasPromoIsTrue(Integer userId);
+  //Optional<List<Post>> getPostByUserIdAAndHasPromoIsTrue(Integer userId);
+  Optional<List<Post>> getAllByUserIdAndHasPromo(Integer userId, boolean hasPromo);
 }

@@ -6,6 +6,8 @@ import br.com.meli.desafiospring.models.Post;
 import br.com.meli.desafiospring.models.User;
 import br.com.meli.desafiospring.services.PostService;
 import br.com.meli.desafiospring.services.UserService;
+import br.com.meli.desafiospring.dtos.ProductCountPromoDTO;
+import br.com.meli.desafiospring.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,14 +22,17 @@ public class ProductController {
     PostService postService;
 
     @Autowired
+    ProductService productService;
+
+    @Autowired
     UserService userService;
 
     @PostMapping(value = "/newpost")
     public ResponseEntity CreatePost(@RequestBody PostDTO postDTO) {
         try {
+            postService.createPost(postDTO, false);
 
-            postService.createPost(postDTO);
-             return ResponseEntity.ok().build();
+            return ResponseEntity.ok().build();
 
         } catch (Exception exception) {
             return ResponseEntity.status(400).build();
@@ -37,10 +42,14 @@ public class ProductController {
 
     @GetMapping(value = "/followed/{userId}/list")
     public ResponseEntity<List<PostDTO>> GetPostsByUser(@PathVariable(value = "userId") int userId) {
+        try {
 
-        List<PostDTO> postList = postService.getById(userId);
+            List<PostDTO> postList = postService.getById(userId);
+            return ResponseEntity.ok(postList);
 
-        return ResponseEntity.ok(postList);
+        } catch (Exception e) {
+            return ResponseEntity.status(400).build();
+        }
     }
 
     @GetMapping(value = "/{userId}/list")
@@ -49,5 +58,25 @@ public class ProductController {
         List<Post> postList = postService.getPromoPostsFromUserById(userId);
 
         return ResponseEntity.ok(new PostsFromUserDTO().toModel(user, postList));
+    }
+
+    @PostMapping(value = "/newpromopost")
+    public ResponseEntity createPromoPost(@RequestBody PostDTO postDTO) {
+        try {
+            postService.createPost(postDTO, true);
+            return ResponseEntity.ok().build();
+
+        } catch (Exception exception) {
+            return ResponseEntity.status(400).build();
+        }
+    }
+
+    @GetMapping(value = "/{userId}/countPromo")
+    public ResponseEntity<ProductCountPromoDTO> countPromo(@PathVariable(value = "userId") int userId) {
+        ProductCountPromoDTO productCountPromoDTO = postService.countPromo(userId);
+        if(productCountPromoDTO == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(productCountPromoDTO);
     }
 }

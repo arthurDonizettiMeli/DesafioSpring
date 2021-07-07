@@ -1,5 +1,6 @@
 package br.com.meli.desafiospring.controllers;
 
+import br.com.meli.desafiospring.dtos.UserFollowedListDTO;
 import br.com.meli.desafiospring.dtos.UserFollowersCountDTO;
 import br.com.meli.desafiospring.dtos.UserFollowerDTO;
 import br.com.meli.desafiospring.dtos.UserFollowersListDTO;
@@ -66,8 +67,8 @@ public class UserController {
   }
 
   @GetMapping(value = "/{userId}/followed/list")
-  public ResponseEntity<List<UserFollowerDTO>> getFollowed(@PathVariable("userId") Integer userId,
-                                                           @RequestParam(value = "order", defaultValue = "name_asc") String order) {
+  public ResponseEntity<UserFollowedListDTO> getFollowed(@PathVariable("userId") Integer userId,
+                                                         @RequestParam(value = "order", defaultValue = "name_asc") String order) {
     return ResponseEntity.ok(userService.getFollowed(userId, order));
   }
 }

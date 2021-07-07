@@ -1,5 +1,6 @@
 package br.com.meli.desafiospring.services;
 
+import br.com.meli.desafiospring.dtos.UserFollowedListDTO;
 import br.com.meli.desafiospring.dtos.UserFollowersCountDTO;
 import br.com.meli.desafiospring.dtos.UserFollowersListDTO;
 import br.com.meli.desafiospring.enums.UserType;
@@ -81,7 +82,7 @@ public class UserService {
         return (new UserFollowersListDTO(userId, findById(userId).getUsername(), followers));
     }
 
-    public List<UserFollowerDTO> getFollowed(Integer userId, String order) {
+    public UserFollowedListDTO getFollowed(Integer userId, String order) {
         List<UserFollowers> userFollowers = userFollowersRepository.findAll();
 
         List<UserFollowerDTO> followers = userFollowers.stream().filter(e -> e.getFollowerId()
@@ -93,10 +94,8 @@ public class UserService {
             }
             return null;
         }).filter(Objects::nonNull).collect(Collectors.toList());
-
         SortUtils.sort(followers, order);
-
-        return followers;
+        return (new UserFollowedListDTO(userId, findById(userId).getUsername(), followers));
     }
 
     public boolean unfollow(Integer followerId, Integer followedId) {
