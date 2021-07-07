@@ -5,7 +5,7 @@ import java.util.Date;
 
 public class ProductDTO {
 
-    private int id_post;
+    private Integer id_post;
     private String productName;
     private String type;
     private String brand;
@@ -15,11 +15,11 @@ public class ProductDTO {
     public ProductDTO() {
     }
 
-    public int getId_post() {
+    public Integer getId_post() {
         return id_post;
     }
 
-    public void setId_post(int id_post) {
+    public void setId_post(Integer id_post) {
         this.id_post = id_post;
     }
 

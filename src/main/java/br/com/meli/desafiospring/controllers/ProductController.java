@@ -17,12 +17,11 @@ public class ProductController {
     PostService postService;
 
     @PostMapping(value = "/newpost")
-    public ResponseEntity<ProductDTO> CreatePost(@RequestBody PostDTO postDTO) {
+    public ResponseEntity CreatePost(@RequestBody PostDTO postDTO) {
         try {
 
-            PostDTO post = postService.createPost();
-
-            return ResponseEntity.ok(post.getDetail());
+            postService.createPost(postDTO);
+             return ResponseEntity.ok().build();
 
         } catch (Exception exception) {
             return ResponseEntity.status(400).build();

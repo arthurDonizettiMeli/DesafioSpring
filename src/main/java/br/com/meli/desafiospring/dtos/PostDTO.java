@@ -1,5 +1,7 @@
 package br.com.meli.desafiospring.dtos;
 
+import br.com.meli.desafiospring.models.Post;
+
 import java.util.Date;
 
 public class PostDTO {
@@ -16,19 +18,19 @@ public class PostDTO {
     public PostDTO() {
     }
 
-    public int getUserID() {
+    public Integer getUserID() {
         return userID;
     }
 
-    public void setUserID(int userID) {
+    public void setUserID(Integer userID) {
         this.userID = userID;
     }
 
-    public int getId_post() {
+    public Integer getId_post() {
         return id_post;
     }
 
-    public void setId_post(int id_post) {
+    public void setId_post(Integer id_post) {
         this.id_post = id_post;
     }
 
@@ -48,19 +50,19 @@ public class PostDTO {
         this.detail = detail;
     }
 
-    public int getCategory() {
+    public Integer getCategory() {
         return category;
     }
 
-    public void setCategory(int category) {
+    public void setCategory(Integer category) {
         this.category = category;
     }
 
-    public double getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 
@@ -78,5 +80,18 @@ public class PostDTO {
 
     public void setDiscount(Double discount) {
         this.discount = discount;
+    }
+
+    public Post toModel (PostDTO postDTO){
+        Post post = new Post();
+        post.setUserId(postDTO.getUserID());
+        post.setId(postDTO.getId_post());
+        post.setDate(postDTO.getDate());
+        post.setProduct(post.getProduct());
+        post.setCategory(postDTO.getCategory());
+        post.setPrice(postDTO.getPrice());
+        post.setHasPromo(postDTO.getHasPromo());
+        post.setDiscount(postDTO.getDiscount());
+        return post;
     }
 }

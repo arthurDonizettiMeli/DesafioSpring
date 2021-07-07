@@ -3,6 +3,7 @@ package br.com.meli.desafiospring.models;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.util.Date;
 
 @Entity
 @Table(name = "posts")
@@ -18,7 +19,7 @@ public class Post {
   private Integer userId;
 
   @NotNull
-  private LocalDate date;
+  private Date date;
 
   @OneToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "product_id")
@@ -63,11 +64,11 @@ public class Post {
     this.userId = userId;
   }
 
-  public LocalDate getDate() {
+  public Date getDate() {
     return date;
   }
 
-  public void setDate(LocalDate date) {
+  public void setDate(Date date) {
     this.date = date;
   }
 
