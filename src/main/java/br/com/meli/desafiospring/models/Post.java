@@ -3,7 +3,6 @@ package br.com.meli.desafiospring.models;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
-import java.util.List;
 
 @Entity
 @Table(name = "posts")
@@ -23,7 +22,13 @@ public class Post {
 
   private Product detail;
 
-  @OneToOne(targetEntity=Product.class, mappedBy="id",cascade=CascadeType.ALL, fetch = FetchType.LAZY)
+  @NotNull
+  private Integer category;
+
+  @NotNull
+  private Double price;
+
+  @OneToOne(targetEntity = Product.class, mappedBy = "id", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
   public Product getDetail() {
     return detail;
   }
@@ -54,5 +59,21 @@ public class Post {
 
   public void setDate(LocalDate date) {
     this.date = date;
+  }
+
+  public Integer getCategory() {
+    return category;
+  }
+
+  public void setCategory(Integer category) {
+    this.category = category;
+  }
+
+  public Double getPrice() {
+    return price;
+  }
+
+  public void setPrice(Double price) {
+    this.price = price;
   }
 }
