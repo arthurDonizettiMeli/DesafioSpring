@@ -1,15 +1,15 @@
 package br.com.meli.desafiospring.dtos;
 
-public class PrductCountPromoDTO {
+public class ProductCountPromoDTO {
 
     private Integer userId;
     private String username;
     private Integer promoProductsCount;
 
-    public PrductCountPromoDTO() {
+    public ProductCountPromoDTO() {
     }
 
-    public PrductCountPromoDTO(Integer userId, String username, Integer promoProductsCount) {
+    public ProductCountPromoDTO(Integer userId, String username, Integer promoProductsCount) {
         this.userId = userId;
         this.username = username;
         this.promoProductsCount = promoProductsCount;
