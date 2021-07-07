@@ -38,20 +38,20 @@ public class UserService {
 
     public boolean unfollow(Integer followerId, Integer followedId) {
         Optional<User> optionalFollower = userRepository.findById(followerId);
-        if (optionalFollower.isPresent() == false)
+        if (optionalFollower.isEmpty())
             return false;
 
         Optional<User> optionalFollowed = userRepository.findById(followedId);
-        if (optionalFollowed.isPresent() == false)
+        if (optionalFollowed.isEmpty())
             return false;
 
         Optional<UserFollowers> optionalFollow = userFollowersRepository.getUserFollowersByFollowerIdAndFollowedId(followerId, followedId);
-        if (optionalFollow.isPresent() == false)
+        if (optionalFollow.isEmpty())
             return false;
 
-        UserFollowers follow = optionalFollow.get();
-
-        userFollowersRepository.delete(follow);
+        User follower = optionalFollower.get();
+        follower.getUserFollowers().removeIf(e -> e.getFollowedId().equals(followedId));
+        userRepository.save(follower);
         return true;
     }
 }

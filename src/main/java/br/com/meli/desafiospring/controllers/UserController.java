@@ -48,4 +48,13 @@ public class UserController {
         List<User> all = userService.findAll();
         return ResponseEntity.ok(all);
     }
+
+    @PostMapping(value = "/{userId}/unfollow/{userIdToUnfollow}")
+    public ResponseEntity unfollow(@PathVariable(value = "userId") int userId, @PathVariable(value = "userIdToUnfollow") int userIdToUnfollow) {
+        if(userService.unfollow(userId, userIdToUnfollow)) {
+            return ResponseEntity.status(200).build();
+        } else {
+            return ResponseEntity.status(400).build();
+        }
+    }
 }
