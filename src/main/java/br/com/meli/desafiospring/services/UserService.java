@@ -1,5 +1,6 @@
 package br.com.meli.desafiospring.services;
 
+import br.com.meli.desafiospring.dtos.UserFollowersCountDTO;
 import br.com.meli.desafiospring.enums.UserType;
 import br.com.meli.desafiospring.models.User;
 import br.com.meli.desafiospring.models.UserFollowers;
@@ -53,5 +54,12 @@ public class UserService {
         user.getUserFollowers().add(userFollowers);
         userRepository.save(user);
         return true;
+    }
+
+    public UserFollowersCountDTO followersCount(int userId) {
+        List<UserFollowers> userFollowersList = userFollowersRepository.findAll();
+        User user = findById(userId);
+        return (new UserFollowersCountDTO(user.getId(), user.getUsername(),
+                (int) userFollowersList.stream().filter(u -> u.getFollowedId() == userId).count()));
     }
 }

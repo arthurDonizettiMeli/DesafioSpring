@@ -1,5 +1,6 @@
 package br.com.meli.desafiospring.controllers;
 
+import br.com.meli.desafiospring.dtos.UserFollowersCountDTO;
 import br.com.meli.desafiospring.enums.UserType;
 import br.com.meli.desafiospring.models.User;
 import br.com.meli.desafiospring.models.UserFollowers;
@@ -22,6 +23,11 @@ public class UserController {
         if (userService.follow(userId, userIdToFollow))
             return ResponseEntity.status(200).build();
         return ResponseEntity.status(400).build();
+    }
+
+    @GetMapping(value = "/{userId}/followers/count/")
+    public ResponseEntity<UserFollowersCountDTO> followersCount(@PathVariable(value = "userId") int userId) {
+        return ResponseEntity.ok(userService.followersCount(userId));
     }
 
     @GetMapping(value = "/test")
