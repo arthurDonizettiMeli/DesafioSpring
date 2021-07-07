@@ -1,5 +1,6 @@
 package br.com.meli.desafiospring.controllers;
 
+import br.com.meli.desafiospring.dtos.UserFollowerDTO;
 import br.com.meli.desafiospring.enums.UserType;
 import br.com.meli.desafiospring.models.User;
 import br.com.meli.desafiospring.models.UserFollowers;
@@ -45,7 +46,21 @@ public class UserController {
         user2.setUsername("vendedor1");
         user2.setUserType(UserType.SELLER);
         userService.save(user2);
+        User user3 = new User();
+        user3.setUsername("comprador2");
+        user3.setUserType(UserType.BUYER);
+        userService.save(user3);
         List<User> all = userService.findAll();
         return ResponseEntity.ok(all);
+    }
+
+    @GetMapping(value = "/{userId}/followers/list")
+    public ResponseEntity<List<UserFollowerDTO>> getFollowers(@PathVariable("userId") Integer userId, @RequestParam(value = "order", defaultValue = "name_asc") String order) {
+        return ResponseEntity.ok(userService.getFollowers(userId, order));
+    }
+
+    @GetMapping(value = "/{userId}/followed/list")
+    public ResponseEntity<List<UserFollowerDTO>> getFollowed(@PathVariable("userId") Integer userId, @RequestParam(value = "order", defaultValue = "name_asc") String order) {
+        return ResponseEntity.ok(userService.getFollowed(userId, order));
     }
 }

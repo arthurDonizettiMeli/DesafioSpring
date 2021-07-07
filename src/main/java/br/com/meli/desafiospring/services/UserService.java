@@ -1,15 +1,16 @@
 package br.com.meli.desafiospring.services;
 
+import br.com.meli.desafiospring.dtos.UserFollowerDTO;
 import br.com.meli.desafiospring.models.User;
 import br.com.meli.desafiospring.models.UserFollowers;
 import br.com.meli.desafiospring.repositories.UserFollowersRepository;
 import br.com.meli.desafiospring.repositories.UserRepository;
+import br.com.meli.desafiospring.utils.SortUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -35,5 +36,41 @@ public class UserService {
 
     public UserFollowers follow(UserFollowers userFollowers) {
         return userFollowersRepository.save(userFollowers);
+    }
+
+    public List<UserFollowerDTO> getFollowers(Integer userId, String order) {
+        List<UserFollowers> userFollowers = userFollowersRepository.findAll();
+
+        List<UserFollowerDTO> followers = userFollowers.stream().filter(e -> e.getFollowedId()
+                .equals(userId)).map(e -> {
+            Optional<User> userOptional = userRepository.findById(e.getFollowerId());
+            if (userOptional.isPresent()) {
+                User user = userOptional.get();
+                return new UserFollowerDTO(user.getId(), user.getUsername());
+            }
+            return null;
+        }).filter(Objects::nonNull).collect(Collectors.toList());
+
+        SortUtils.sort(followers, order);
+
+        return followers;
+    }
+
+    public List<UserFollowerDTO> getFollowed(Integer userId, String order) {
+        List<UserFollowers> userFollowers = userFollowersRepository.findAll();
+
+        List<UserFollowerDTO> followers = userFollowers.stream().filter(e -> e.getFollowerId()
+                .equals(userId)).map(e -> {
+            Optional<User> userOptional = userRepository.findById(e.getFollowedId());
+            if (userOptional.isPresent()) {
+                User user = userOptional.get();
+                return new UserFollowerDTO(user.getId(), user.getUsername());
+            }
+            return null;
+        }).filter(Objects::nonNull).collect(Collectors.toList());
+
+        SortUtils.sort(followers, order);
+
+        return followers;
     }
 }
