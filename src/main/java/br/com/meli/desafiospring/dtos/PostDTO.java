@@ -87,7 +87,7 @@ public class PostDTO {
         post.setUserId(postDTO.getUserID());
         post.setId(postDTO.getId_post());
         post.setDate(postDTO.getDate());
-        post.setProduct(post.getProduct());
+        post.setProduct(postDTO.getDetail().toModel(postDTO.getDetail()));
         post.setCategory(postDTO.getCategory());
         post.setPrice(postDTO.getPrice());
         post.setHasPromo(postDTO.getHasPromo());

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @Service
@@ -36,12 +37,18 @@ public class PostService {
     }
 
     public List<PostDTO> getById(Integer userId) {
-        return null;
+
+        List<Post> postList = postRepository.findAll().stream().filter(e -> {
+            Long startDate = e.getDate().getTime();
+            Long dateNow = System.currentTimeMillis();
+            long difference = dateNow - startDate;
+            return TimeUnit.MILLISECONDS.toDays(difference) < 15;
+        }).collect(Collectors.toList());
+
+        return postList.stream().filter(e -> e.getUserId().equals(userId)).map(e -> e.toDTO(e)).collect(Collectors.toList());
+
     }
 
-    public void save(PostDTO post) {
-        postRepository.save(post.toModel(post));
-    }
 
     public ProductCountPromoDTO countPromo(Integer userId) {
         Optional<User> optionalUser = userRepository.findById(userId);
@@ -56,6 +63,6 @@ public class PostService {
         User user = optionalUser.get();
 
         return new ProductCountPromoDTO(userId, user.getUsername(), filteredPosts.size());
-    }
 
+    }
 }

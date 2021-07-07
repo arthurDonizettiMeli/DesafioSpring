@@ -1,6 +1,8 @@
 package br.com.meli.desafiospring.services;
 
+import br.com.meli.desafiospring.dtos.UserFollowedListDTO;
 import br.com.meli.desafiospring.dtos.UserFollowersCountDTO;
+import br.com.meli.desafiospring.dtos.UserFollowersListDTO;
 import br.com.meli.desafiospring.enums.UserType;
 import br.com.meli.desafiospring.dtos.UserFollowerDTO;
 import br.com.meli.desafiospring.models.User;
@@ -64,7 +66,7 @@ public class UserService {
                 (int) userFollowersList.stream().filter(u -> u.getFollowedId() == userId).count()));
     }
 
-    public List<UserFollowerDTO> getFollowers(Integer userId, String order) {
+    public UserFollowersListDTO getFollowers(Integer userId, String order) {
         List<UserFollowers> userFollowers = userFollowersRepository.findAll();
 
         List<UserFollowerDTO> followers = userFollowers.stream().filter(e -> e.getFollowedId()
@@ -76,13 +78,11 @@ public class UserService {
             }
             return null;
         }).filter(Objects::nonNull).collect(Collectors.toList());
-
         SortUtils.sort(followers, order);
-
-        return followers;
+        return (new UserFollowersListDTO(userId, findById(userId).getUsername(), followers));
     }
 
-    public List<UserFollowerDTO> getFollowed(Integer userId, String order) {
+    public UserFollowedListDTO getFollowed(Integer userId, String order) {
         List<UserFollowers> userFollowers = userFollowersRepository.findAll();
 
         List<UserFollowerDTO> followers = userFollowers.stream().filter(e -> e.getFollowerId()
@@ -94,10 +94,8 @@ public class UserService {
             }
             return null;
         }).filter(Objects::nonNull).collect(Collectors.toList());
-
         SortUtils.sort(followers, order);
-
-        return followers;
+        return (new UserFollowedListDTO(userId, findById(userId).getUsername(), followers));
     }
 
     public boolean unfollow(Integer followerId, Integer followedId) {
