@@ -2,9 +2,9 @@ package br.com.meli.desafiospring.controllers;
 
 import br.com.meli.desafiospring.dtos.UserFollowersCountDTO;
 import br.com.meli.desafiospring.dtos.UserFollowerDTO;
+import br.com.meli.desafiospring.dtos.UserFollowersListDTO;
 import br.com.meli.desafiospring.enums.UserType;
 import br.com.meli.desafiospring.models.User;
-import br.com.meli.desafiospring.models.UserFollowers;
 import br.com.meli.desafiospring.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -60,7 +60,7 @@ public class UserController {
   }
 
   @GetMapping(value = "/{userId}/followers/list")
-  public ResponseEntity<List<UserFollowerDTO>> getFollowers(@PathVariable("userId") Integer userId,
+  public ResponseEntity<UserFollowersListDTO> getFollowers(@PathVariable("userId") Integer userId,
                                                             @RequestParam(value = "order", defaultValue = "name_asc") String order) {
     return ResponseEntity.ok(userService.getFollowers(userId, order));
   }
