@@ -30,6 +30,15 @@ public class Post {
   @NotNull
   private Double price;
 
+  @NotNull
+  private Boolean hasPromo;
+
+  @NotNull
+  private Double discount;
+
+  public Post() {
+  }
+
   public Product getProduct() {
     return product;
   }
@@ -76,5 +85,21 @@ public class Post {
 
   public void setPrice(Double price) {
     this.price = price;
+  }
+
+  public Boolean getHasPromo() {
+    return hasPromo;
+  }
+
+  public void setHasPromo(Boolean hasPromo) {
+    this.hasPromo = hasPromo;
+  }
+
+  public Double getDiscount() {
+    return discount;
+  }
+
+  public void setDiscount(Double discount) {
+    this.discount = discount;
   }
 }
