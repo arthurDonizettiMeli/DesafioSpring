@@ -20,7 +20,9 @@ public class Post {
   @NotNull
   private LocalDate date;
 
-  private Product detail;
+  @OneToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "product_id")
+  private Product product;
 
   @NotNull
   private Integer category;
@@ -28,13 +30,12 @@ public class Post {
   @NotNull
   private Double price;
 
-  @OneToOne(targetEntity = Product.class, mappedBy = "id", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-  public Product getDetail() {
-    return detail;
+  public Product getProduct() {
+    return product;
   }
 
-  public void setDetail(Product detail) {
-    this.detail = detail;
+  public void setProduct(Product detail) {
+    this.product = detail;
   }
 
   public Integer getId() {
