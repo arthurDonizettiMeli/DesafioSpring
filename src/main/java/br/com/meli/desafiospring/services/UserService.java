@@ -1,10 +1,12 @@
 package br.com.meli.desafiospring.services;
 
+import br.com.meli.desafiospring.enums.UserType;
 import br.com.meli.desafiospring.models.User;
 import br.com.meli.desafiospring.models.UserFollowers;
 import br.com.meli.desafiospring.repositories.UserFollowersRepository;
 import br.com.meli.desafiospring.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -33,7 +35,23 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public UserFollowers follow(UserFollowers userFollowers) {
-        return userFollowersRepository.save(userFollowers);
+    public boolean follow(int userId, int userIdToFollow) {
+        User user = findById(userId);
+
+        if (user == null)
+            return false;
+        if (findById(userIdToFollow) == null)
+            return false;
+        if (userId == userIdToFollow)
+            return false;
+        if (user.getUserType().equals(UserType.SELLER))
+            return false;
+        if (user.getUserFollowers().stream().anyMatch(u -> u.getFollowedId() == userIdToFollow))
+            return false;
+        UserFollowers userFollowers = new UserFollowers(userIdToFollow, userId);
+        userFollowersRepository.save(userFollowers);
+        user.getUserFollowers().add(userFollowers);
+        userRepository.save(user);
+        return true;
     }
 }

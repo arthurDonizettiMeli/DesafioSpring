@@ -19,20 +19,9 @@ public class UserController {
 
     @PostMapping(value = "/{userId}/follow/{userIdToFollow}")
     public ResponseEntity follow(@PathVariable(value = "userId") int userId, @PathVariable(value = "userIdToFollow") int userIdToFollow) {
-        User user = userService.findById(userId);
-
-        if (userId == userIdToFollow)
-            return ResponseEntity.status(400).build();
-        if (user.getUserType().equals(UserType.SELLER))
-            return ResponseEntity.status(400).build();
-        if (userService.findById(userIdToFollow) == null)
-            return ResponseEntity.status(400).build();
-        if (user.getUserFollowers().stream().anyMatch(u -> u.getFollowedId() == userIdToFollow))
-            return ResponseEntity.status(400).build();
-        UserFollowers userFollowers = userService.follow(new UserFollowers(userIdToFollow, userId));
-        user.getUserFollowers().add(userFollowers);
-        userService.save(user);
-        return ResponseEntity.status(200).build();
+        if (userService.follow(userId, userIdToFollow))
+            return ResponseEntity.status(200).build();
+        return ResponseEntity.status(400).build();
     }
 
     @GetMapping(value = "/test")
