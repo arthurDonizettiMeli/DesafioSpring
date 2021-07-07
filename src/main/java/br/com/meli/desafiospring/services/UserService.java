@@ -116,6 +116,9 @@ public class UserService {
         User follower = optionalFollower.get();
         follower.getUserFollowers().removeIf(e -> e.getFollowedId().equals(followedId));
         userRepository.save(follower);
+
+        UserFollowers follow = optionalFollow.get();
+        userFollowersRepository.delete(follow);
         return true;
     }
 }
