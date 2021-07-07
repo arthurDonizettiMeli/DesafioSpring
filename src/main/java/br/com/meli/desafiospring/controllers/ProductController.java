@@ -1,8 +1,11 @@
 package br.com.meli.desafiospring.controllers;
 
 import br.com.meli.desafiospring.dtos.PostDTO;
-import br.com.meli.desafiospring.dtos.ProductDTO;
+import br.com.meli.desafiospring.dtos.PostsFromUserDTO;
+import br.com.meli.desafiospring.models.Post;
+import br.com.meli.desafiospring.models.User;
 import br.com.meli.desafiospring.services.PostService;
+import br.com.meli.desafiospring.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +18,9 @@ public class ProductController {
 
     @Autowired
     PostService postService;
+
+    @Autowired
+    UserService userService;
 
     @PostMapping(value = "/newpost")
     public ResponseEntity CreatePost(@RequestBody PostDTO postDTO) {
@@ -37,7 +43,11 @@ public class ProductController {
         return ResponseEntity.ok(postList);
     }
 
+    @GetMapping(value = "/{userId}/list")
+    public ResponseEntity<PostsFromUserDTO> GetPromoProductsFromUser(@PathVariable(value = "userId") Integer userId){
+        User user = userService.findById(userId);
+        List<Post> postList = postService.getPromoPostsFromUserById(userId);
 
-
-
+        return ResponseEntity.ok(new PostsFromUserDTO().toModel(user, postList));
+    }
 }
