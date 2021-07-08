@@ -81,4 +81,12 @@ public class UserController {
   public ResponseEntity<List<UserFollowersCountDTO>> getRankedSellers(@RequestParam(value = "size", defaultValue = "10") int size){
     return ResponseEntity.ok(userService.getRankedSellers(size));
   }
+
+  @PostMapping(value = "/register")
+  public ResponseEntity<User> registerNewUser(@RequestBody User user) {
+    User newUser = new User();
+    newUser.setUsername(user.getUsername());
+    newUser.setUserType(user.getUserType());
+    return ResponseEntity.ok(userService.save(newUser));
+  }
 }

@@ -28,8 +28,8 @@ public class UserService {
         return user.orElse(null);
     }
 
-    public void save(User user) {
-        userRepository.save(user);
+    public User save(User user) {
+        return (userRepository.save(user));
     }
 
     public List<User> findAll() {
