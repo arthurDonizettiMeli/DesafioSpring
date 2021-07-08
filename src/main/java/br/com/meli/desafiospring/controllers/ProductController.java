@@ -5,7 +5,6 @@ import br.com.meli.desafiospring.models.Post;
 import br.com.meli.desafiospring.models.User;
 import br.com.meli.desafiospring.services.PostService;
 import br.com.meli.desafiospring.services.UserService;
-import br.com.meli.desafiospring.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,9 +17,6 @@ public class ProductController {
 
     @Autowired
     PostService postService;
-
-    @Autowired
-    ProductService productService;
 
     @Autowired
     UserService userService;

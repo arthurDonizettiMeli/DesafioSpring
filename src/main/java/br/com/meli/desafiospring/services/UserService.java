@@ -47,9 +47,7 @@ public class UserService {
     public boolean follow(int userId, int userIdToFollow) {
         User user = findById(userId);
 
-        if (user == null)
-            return false;
-        if (findById(userIdToFollow) == null)
+        if (user == null || findById(userIdToFollow) == null)
             return false;
         if (userId == userIdToFollow)
             return false;
@@ -65,17 +63,15 @@ public class UserService {
     }
 
     public UserFollowersCountDTO followersCount(int userId) {
-        List<UserFollowers> userFollowersList = userFollowersRepository.findAll();
+        List<UserFollowers> userFollowersList = userFollowersRepository.findAllByFollowedId(userId);
         User user = findById(userId);
-        return (new UserFollowersCountDTO(user.getId(), user.getUsername(),
-                (int) userFollowersList.stream().filter(u -> u.getFollowedId() == userId).count()));
+        return (new UserFollowersCountDTO(user.getId(), user.getUsername(), userFollowersList.size()));
     }
 
     public UserFollowersListDTO getFollowers(Integer userId, String order) {
-        List<UserFollowers> userFollowers = userFollowersRepository.findAll();
+        List<UserFollowers> userFollowers = userFollowersRepository.findAllByFollowedId(userId);
 
-        List<UserFollowerDTO> followers = userFollowers.stream().filter(e -> e.getFollowedId()
-                .equals(userId)).map(e -> {
+        List<UserFollowerDTO> followers = userFollowers.stream().map(e -> {
             Optional<User> userOptional = userRepository.findById(e.getFollowerId());
             if (userOptional.isPresent()) {
                 User user = userOptional.get();
@@ -126,15 +122,9 @@ public class UserService {
     }
 
     public List<UserFollowersCountDTO> getRankedSellers(int size) {
-        if (size > 100)
-            size = 100;
+        size = size > 100 ? 100 : Math.max(size, 1);
 
-        if (size < 1)
-            size = 1;
-
-        Optional<List<User>> optionalSellers = userRepository.getAllByUserType(UserType.SELLER);
-        List<User> sellers = optionalSellers.get();
-
+        List<User> sellers = userRepository.getAllByUserType(UserType.SELLER);
         List<UserFollowersCountDTO> followersCountDTOS = sellers.stream().map(s -> followersCount(s.getId())).collect(Collectors.toList());
 
         SortUtils.sort(followersCountDTOS, "desc");
