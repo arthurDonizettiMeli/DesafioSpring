@@ -4,7 +4,8 @@ import br.com.meli.desafiospring.models.Post;
 
 import java.util.Date;
 
-public class PostDTO {
+
+public class PostDTO implements Comparable<PostDTO>{
 
     private Integer userID;
     private Integer id_post;
@@ -93,5 +94,10 @@ public class PostDTO {
         post.setHasPromo(postDTO.getHasPromo());
         post.setDiscount(postDTO.getDiscount());
         return post;
+    }
+
+    @Override
+    public int compareTo(PostDTO o) {
+        return getDate().compareTo(o.getDate());
     }
 }

@@ -7,6 +7,7 @@ import br.com.meli.desafiospring.models.User;
 import br.com.meli.desafiospring.repositories.PostRepository;
 import br.com.meli.desafiospring.repositories.ProductRepository;
 import br.com.meli.desafiospring.repositories.UserRepository;
+import br.com.meli.desafiospring.utils.SortUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,7 +42,7 @@ public class PostService {
         postRepository.save(post.toModel(post));
     }
 
-    public List<PostDTO> getById(Integer userId) {
+    public List<PostDTO> getById(Integer userId, String order) {
 
         List<Post> postList = postRepository.findAll().stream().filter(e -> {
             Long startDate = e.getDate().getTime();
@@ -50,7 +51,11 @@ public class PostService {
             return TimeUnit.MILLISECONDS.toDays(difference) < 15;
         }).collect(Collectors.toList());
 
-        return postList.stream().filter(e -> e.getUserId().equals(userId)).map(e -> e.toDTO(e)).collect(Collectors.toList());
+        List<PostDTO> list = postList.stream().filter(e -> e.getUserId().equals(userId)).map(e -> e.toDTO(e)).collect(Collectors.toList());
+
+        SortUtils.sort(list, order);
+
+        return list;
     }
 
     public List<Post> getPromoPostsFromUserById(Integer userId) {
