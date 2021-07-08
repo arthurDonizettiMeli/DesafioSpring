@@ -11,7 +11,6 @@ import br.com.meli.desafiospring.utils.SortUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
@@ -43,7 +42,6 @@ public class PostService {
     }
 
     public List<PostDTO> getById(Integer userId, String order) {
-
         List<Post> postList = postRepository.findAll().stream().filter(e -> {
             Long startDate = e.getDate().getTime();
             Long dateNow = System.currentTimeMillis();
@@ -60,26 +58,24 @@ public class PostService {
 
     public List<Post> getPromoPostsFromUserById(Integer userId) {
         Optional<User> optionalUser = userRepository.findById(userId);
-        if(optionalUser.isEmpty()) {
+        if (optionalUser.isEmpty())
             return null;
-        }
+
 
         List<Post> posts = postRepository.findAll();
 
-        List<Post> filteredPosts = posts.stream().filter(e -> e.getUserId().equals(userId) && e.getHasPromo()).collect(Collectors.toList());
-
-        return filteredPosts;
+        return posts.stream().filter(e -> e.getUserId().equals(userId) && e.getHasPromo()).collect(Collectors.toList());
     }
 
     public ProductCountPromoDTO countPromo(Integer userId) {
-        Optional<User> optionalUser = userRepository.findById(userId);
-        if(optionalUser.isEmpty()) {
+        List<Post> filteredPosts = getPromoPostsFromUserById(userId);
+
+        if (filteredPosts == null)
             return null;
-        }
 
-        List<Post> posts = postRepository.findAll();
-
-        List<Post> filteredPosts = posts.stream().filter(e -> e.getUserId().equals(userId) && e.getHasPromo()).collect(Collectors.toList());
+        Optional<User> optionalUser = userRepository.findById(userId);
+        if (optionalUser.isEmpty())
+            return null;
 
         User user = optionalUser.get();
 
@@ -89,7 +85,7 @@ public class PostService {
     public PostDTO updatePost(Integer postId, PostDTO postDTO) {
         Optional<Post> postOptional = postRepository.findById(postId);
 
-        if(postOptional.isEmpty()) {
+        if (postOptional.isEmpty()) {
             return null;
         }
 
