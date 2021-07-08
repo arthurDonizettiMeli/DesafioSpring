@@ -29,7 +29,15 @@ public class UserService {
     }
 
     public User save(User user) {
-        return (userRepository.save(user));
+        if(user.getUserType() == null || (!user.getUserType().equals(UserType.SELLER) && !user.getUserType().equals(UserType.BUYER))) {
+            return null;
+        }
+
+        User newUser = new User();
+        newUser.setUsername(user.getUsername());
+        newUser.setUserType(user.getUserType());
+
+        return (userRepository.save(newUser));
     }
 
     public List<User> findAll() {

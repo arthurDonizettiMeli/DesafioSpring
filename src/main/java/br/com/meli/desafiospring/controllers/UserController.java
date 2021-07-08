@@ -84,9 +84,12 @@ public class UserController {
 
   @PostMapping(value = "/register")
   public ResponseEntity<User> registerNewUser(@RequestBody User user) {
-    User newUser = new User();
-    newUser.setUsername(user.getUsername());
-    newUser.setUserType(user.getUserType());
-    return ResponseEntity.ok(userService.save(newUser));
+    User saveUser = userService.save(user);
+
+    if(saveUser == null) {
+      return ResponseEntity.badRequest().build();
+    }
+
+    return ResponseEntity.ok(saveUser);
   }
 }
