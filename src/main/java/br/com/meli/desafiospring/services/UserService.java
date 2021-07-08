@@ -1,10 +1,7 @@
 package br.com.meli.desafiospring.services;
 
-import br.com.meli.desafiospring.dtos.UserFollowedListDTO;
-import br.com.meli.desafiospring.dtos.UserFollowersCountDTO;
-import br.com.meli.desafiospring.dtos.UserFollowersListDTO;
+import br.com.meli.desafiospring.dtos.*;
 import br.com.meli.desafiospring.enums.UserType;
-import br.com.meli.desafiospring.dtos.UserFollowerDTO;
 import br.com.meli.desafiospring.models.User;
 import br.com.meli.desafiospring.models.UserFollowers;
 import br.com.meli.desafiospring.repositories.UserFollowersRepository;
@@ -118,5 +115,24 @@ public class UserService {
         UserFollowers follow = optionalFollow.get();
         userFollowersRepository.delete(follow);
         return true;
+    }
+
+    public List<UserFollowersCountDTO> getRankedSellers(int size) {
+        if (size > 100)
+            size = 100;
+
+        if (size < 1)
+            size = 1;
+
+        Optional<List<User>> optionalSellers = userRepository.getAllByUserType(UserType.SELLER);
+        List<User> sellers = optionalSellers.get();
+
+        List<UserFollowersCountDTO> followersCountDTOS = sellers.stream().map(s -> followersCount(s.getId())).collect(Collectors.toList());
+
+        SortUtils.sort(followersCountDTOS, "desc");
+
+        size = Math.min(size, followersCountDTOS.size());
+
+        return followersCountDTOS.subList(0, size);
     }
 }

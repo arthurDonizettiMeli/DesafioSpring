@@ -1,6 +1,6 @@
 package br.com.meli.desafiospring.dtos;
 
-public class UserFollowersCountDTO {
+public class UserFollowersCountDTO implements Comparable<UserFollowersCountDTO> {
 
     private Integer userId;
     private String userName;
@@ -37,5 +37,10 @@ public class UserFollowersCountDTO {
 
     public void setFollowers_count(Integer followers_count) {
         this.followers_count = followers_count;
+    }
+
+    @Override
+    public int compareTo(UserFollowersCountDTO u) {
+        return this.followers_count.compareTo(u.followers_count);
     }
 }

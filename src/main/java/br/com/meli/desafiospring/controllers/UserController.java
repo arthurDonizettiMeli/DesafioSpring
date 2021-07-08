@@ -1,9 +1,6 @@
 package br.com.meli.desafiospring.controllers;
 
-import br.com.meli.desafiospring.dtos.UserFollowedListDTO;
-import br.com.meli.desafiospring.dtos.UserFollowersCountDTO;
-import br.com.meli.desafiospring.dtos.UserFollowerDTO;
-import br.com.meli.desafiospring.dtos.UserFollowersListDTO;
+import br.com.meli.desafiospring.dtos.*;
 import br.com.meli.desafiospring.enums.UserType;
 import br.com.meli.desafiospring.models.User;
 import br.com.meli.desafiospring.services.UserService;
@@ -46,6 +43,14 @@ public class UserController {
     user3.setUsername("comprador2");
     user3.setUserType(UserType.BUYER);
     userService.save(user3);
+    User user4 = new User();
+    user4.setUsername("vendedor2");
+    user4.setUserType(UserType.SELLER);
+    userService.save(user4);
+    User user5 = new User();
+    user5.setUsername("comprador3");
+    user5.setUserType(UserType.BUYER);
+    userService.save(user5);
     List<User> all = userService.findAll();
     return ResponseEntity.ok(all);
   }
@@ -70,5 +75,10 @@ public class UserController {
   public ResponseEntity<UserFollowedListDTO> getFollowed(@PathVariable("userId") Integer userId,
                                                          @RequestParam(value = "order", defaultValue = "name_asc") String order) {
     return ResponseEntity.ok(userService.getFollowed(userId, order));
+  }
+
+  @GetMapping(value = "/popular-sellers/ranking")
+  public ResponseEntity<List<UserFollowersCountDTO>> getRankedSellers(@RequestParam(value = "size", defaultValue = "10") int size){
+    return ResponseEntity.ok(userService.getRankedSellers(size));
   }
 }

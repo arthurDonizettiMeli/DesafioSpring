@@ -24,7 +24,7 @@ public class User {
     @NotNull
     private UserType userType;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     private List<UserFollowers> userFollowers;
 
     public User() {
