@@ -7,13 +7,12 @@ import br.com.meli.desafiospring.models.User;
 import br.com.meli.desafiospring.repositories.PostRepository;
 import br.com.meli.desafiospring.repositories.ProductRepository;
 import br.com.meli.desafiospring.repositories.UserRepository;
+import br.com.meli.desafiospring.utils.DateUtils;
 import br.com.meli.desafiospring.utils.SortUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @Service
@@ -41,13 +40,12 @@ public class PostService {
         postRepository.save(post.toModel());
     }
 
+
     public List<PostDTO> getById(Integer userId, String order) {
-        List<Post> postList = postRepository.findAll().stream().filter(e -> {
-            Long startDate = e.getDate().getTime();
-            Long dateNow = System.currentTimeMillis();
-            long difference = dateNow - startDate;
-            return TimeUnit.MILLISECONDS.toDays(difference) < 15;
-        }).collect(Collectors.toList());
+        List<Post> postList = postRepository.findAll().stream()
+                .filter(e -> DateUtils.getDifferenceBetweenEpochsInDays(
+                        e.getDate().getTime(), System.currentTimeMillis()) < 15)
+                .collect(Collectors.toList());
 
         List<PostDTO> list = postList.stream().filter(e -> e.getUserId().equals(userId)).map(Post::toDTO).collect(Collectors.toList());
 
