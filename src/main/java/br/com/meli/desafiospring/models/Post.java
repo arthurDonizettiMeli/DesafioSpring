@@ -106,16 +106,16 @@ public class Post {
         this.discount = discount;
     }
 
-    public PostDTO toDTO(Post post) {
+    public PostDTO toDTO() {
         PostDTO postDTO = new PostDTO();
-        postDTO.setUserID(post.userId);
-        postDTO.setId_post(post.getId());
-        postDTO.setDate(post.getDate());
-        postDTO.setDetail(post.getProduct().toDTO(post.product));
-        postDTO.setCategory(post.getCategory());
-        postDTO.setPrice(post.getPrice());
-        postDTO.setHasPromo(post.getHasPromo());
-        postDTO.setDiscount(post.getDiscount());
+        postDTO.setUserID(userId);
+        postDTO.setId_post(getId());
+        postDTO.setDate(getDate());
+        postDTO.setDetail(getProduct().toDTO());
+        postDTO.setCategory(getCategory());
+        postDTO.setPrice(getPrice());
+        postDTO.setHasPromo(getHasPromo());
+        postDTO.setDiscount(getDiscount());
         return postDTO;
     }
 

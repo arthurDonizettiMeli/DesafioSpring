@@ -83,16 +83,16 @@ public class PostDTO implements Comparable<PostDTO>{
         this.discount = discount;
     }
 
-    public Post toModel (PostDTO postDTO){
+    public Post toModel (){
         Post post = new Post();
-        post.setUserId(postDTO.getUserID());
-        post.setId(postDTO.getId_post());
-        post.setDate(postDTO.getDate());
-        post.setProduct(postDTO.getDetail().toModel(postDTO.getDetail()));
-        post.setCategory(postDTO.getCategory());
-        post.setPrice(postDTO.getPrice());
-        post.setHasPromo(postDTO.getHasPromo());
-        post.setDiscount(postDTO.getDiscount());
+        post.setUserId(getUserID());
+        post.setId(getId_post());
+        post.setDate(getDate());
+        post.setProduct(getDetail().toModel());
+        post.setCategory(getCategory());
+        post.setPrice(getPrice());
+        post.setHasPromo(getHasPromo());
+        post.setDiscount(getDiscount());
         return post;
     }
 

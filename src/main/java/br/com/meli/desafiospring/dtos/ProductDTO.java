@@ -65,14 +65,14 @@ public class ProductDTO {
         this.notes = notes;
     }
 
-    public Product toModel(ProductDTO productDTO) {
+    public Product toModel() {
         Product product = new Product();
-        product.setId(productDTO.getProduct_id());
-        product.setName(productDTO.getProductName());
-        product.setType(productDTO.getType());
-        product.setBrand(productDTO.getBrand());
-        product.setColor(productDTO.getColor());
-        product.setNotes(productDTO.getNotes());
+        product.setId(getProduct_id());
+        product.setName(getProductName());
+        product.setType(getType());
+        product.setBrand(getBrand());
+        product.setColor(getColor());
+        product.setNotes(getNotes());
         return product;
     }
 }

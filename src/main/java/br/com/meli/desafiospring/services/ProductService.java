@@ -19,6 +19,6 @@ public class ProductService {
     PostRepository postRepository;
 
     public Product Save(ProductDTO productDTO) {
-        return productRepository.save(productDTO.toModel(productDTO));
+        return productRepository.save(productDTO.toModel());
     }
 }

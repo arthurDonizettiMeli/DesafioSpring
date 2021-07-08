@@ -39,7 +39,7 @@ public class PostService {
             post.setHasPromo(false);
             post.setDiscount(0.0);
         }
-        postRepository.save(post.toModel(post));
+        postRepository.save(post.toModel());
     }
 
     public List<PostDTO> getById(Integer userId, String order) {
@@ -51,7 +51,7 @@ public class PostService {
             return TimeUnit.MILLISECONDS.toDays(difference) < 15;
         }).collect(Collectors.toList());
 
-        List<PostDTO> list = postList.stream().filter(e -> e.getUserId().equals(userId)).map(e -> e.toDTO(e)).collect(Collectors.toList());
+        List<PostDTO> list = postList.stream().filter(e -> e.getUserId().equals(userId)).map(Post::toDTO).collect(Collectors.toList());
 
         SortUtils.sort(list, order);
 
@@ -97,7 +97,7 @@ public class PostService {
 
         post.setCategory(postDTO.getCategory());
         post.setPrice(postDTO.getPrice());
-        post.setProduct(postDTO.getDetail().toModel(postDTO.getDetail()));
+        post.setProduct(postDTO.getDetail().toModel());
         post.setDiscount(postDTO.getDiscount());
         post.setHasPromo(postDTO.getHasPromo());
 
@@ -107,6 +107,6 @@ public class PostService {
 
         Post savedPost = postRepository.save(post);
 
-        return savedPost.toDTO(savedPost);
+        return savedPost.toDTO();
     }
 }

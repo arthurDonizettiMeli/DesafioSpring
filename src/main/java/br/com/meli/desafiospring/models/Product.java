@@ -87,14 +87,14 @@ public class Product {
         this.notes = notes;
     }
 
-    public ProductDTO toDTO(Product product) {
+    public ProductDTO toDTO() {
         ProductDTO productDTO = new ProductDTO();
-        productDTO.setProduct_id(product.getId());
-        productDTO.setProductName(product.getName());
-        productDTO.setType(product.getType());
-        productDTO.setBrand(product.getBrand());
-        productDTO.setColor(product.getColor());
-        productDTO.setNotes(product.getNotes());
+        productDTO.setProduct_id(getId());
+        productDTO.setProductName(getName());
+        productDTO.setType(getType());
+        productDTO.setBrand(getBrand());
+        productDTO.setColor(getColor());
+        productDTO.setNotes(getNotes());
         return productDTO;
     }
 }
