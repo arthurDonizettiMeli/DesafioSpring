@@ -85,4 +85,28 @@ public class PostService {
 
         return new ProductCountPromoDTO(userId, user.getUsername(), filteredPosts.size());
     }
+
+    public PostDTO updatePost(Integer postId, PostDTO postDTO) {
+        Optional<Post> postOptional = postRepository.findById(postId);
+
+        if(postOptional.isEmpty()) {
+            return null;
+        }
+
+        Post post = postOptional.get();
+
+        post.setCategory(postDTO.getCategory());
+        post.setPrice(postDTO.getPrice());
+        post.setProduct(postDTO.getDetail().toModel(postDTO.getDetail()));
+        post.setDiscount(postDTO.getDiscount());
+        post.setHasPromo(postDTO.getHasPromo());
+
+        if (post.getDiscount() == 0) {
+            throw new RuntimeException("Discount should be bigger than 0");
+        }
+
+        Post savedPost = postRepository.save(post);
+
+        return savedPost.toDTO(savedPost);
+    }
 }

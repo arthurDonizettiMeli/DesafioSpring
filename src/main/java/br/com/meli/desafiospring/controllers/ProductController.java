@@ -79,4 +79,16 @@ public class ProductController {
         return ResponseEntity.ok(productCountPromoDTO);
     }
 
+    @PatchMapping("/changetopromopost/{postId}")
+    public ResponseEntity<PostDTO> changeToPromoPost(@PathVariable Integer postId, @RequestBody PostDTO postDTO) {
+        try {
+            PostDTO post = postService.updatePost(postId, postDTO);
+
+            if(post == null) {
+                return ResponseEntity.notFound().build();
+            }
+        } catch(Exception ignored) {}
+        return ResponseEntity.badRequest().build();
+    }
+
 }
