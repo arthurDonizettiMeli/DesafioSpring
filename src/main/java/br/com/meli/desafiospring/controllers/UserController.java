@@ -1,10 +1,10 @@
 package br.com.meli.desafiospring.controllers;
 
 import br.com.meli.desafiospring.dtos.*;
-import br.com.meli.desafiospring.enums.UserType;
 import br.com.meli.desafiospring.models.User;
 import br.com.meli.desafiospring.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,7 +18,7 @@ public class UserController {
   UserService userService;
 
   @PostMapping(value = "/{userId}/follow/{userIdToFollow}")
-  public ResponseEntity follow(@PathVariable(value = "userId") int userId, @PathVariable(value = "userIdToFollow") int userIdToFollow) {
+  public ResponseEntity<HttpStatus> follow(@PathVariable(value = "userId") int userId, @PathVariable(value = "userIdToFollow") int userIdToFollow) {
     if (userService.follow(userId, userIdToFollow))
       return ResponseEntity.status(200).build();
     return ResponseEntity.status(400).build();
@@ -29,34 +29,8 @@ public class UserController {
     return ResponseEntity.ok(userService.followersCount(userId));
   }
 
-  @GetMapping(value = "/test")
-  public ResponseEntity<List<User>> test() {
-    User user1 = new User();
-    user1.setUsername("comprador1");
-    user1.setUserType(UserType.BUYER);
-    userService.save(user1);
-    User user2 = new User();
-    user2.setUsername("vendedor1");
-    user2.setUserType(UserType.SELLER);
-    userService.save(user2);
-    User user3 = new User();
-    user3.setUsername("comprador2");
-    user3.setUserType(UserType.BUYER);
-    userService.save(user3);
-    User user4 = new User();
-    user4.setUsername("vendedor2");
-    user4.setUserType(UserType.SELLER);
-    userService.save(user4);
-    User user5 = new User();
-    user5.setUsername("comprador3");
-    user5.setUserType(UserType.BUYER);
-    userService.save(user5);
-    List<User> all = userService.findAll();
-    return ResponseEntity.ok(all);
-  }
-
   @PostMapping(value = "/{userId}/unfollow/{userIdToUnfollow}")
-  public ResponseEntity unfollow(@PathVariable(value = "userId") int userId,
+  public ResponseEntity<HttpStatus> unfollow(@PathVariable(value = "userId") int userId,
                                  @PathVariable(value = "userIdToUnfollow") int userIdToUnfollow) {
     if (userService.unfollow(userId, userIdToUnfollow)) {
       return ResponseEntity.status(200).build();
@@ -87,7 +61,7 @@ public class UserController {
     User saveUser = userService.save(user);
 
     if(saveUser == null) {
-      return ResponseEntity.badRequest().build();
+      return ResponseEntity.status(400).build();
     }
 
     return ResponseEntity.ok(saveUser);

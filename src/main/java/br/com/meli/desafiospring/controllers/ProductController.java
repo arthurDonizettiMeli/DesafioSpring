@@ -6,6 +6,7 @@ import br.com.meli.desafiospring.models.User;
 import br.com.meli.desafiospring.services.PostService;
 import br.com.meli.desafiospring.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,7 +23,7 @@ public class ProductController {
     UserService userService;
 
     @PostMapping(value = "/newpost")
-    public ResponseEntity CreatePost(@RequestBody PostDTO postDTO) {
+    public ResponseEntity<HttpStatus> createPost(@RequestBody PostDTO postDTO) {
         try {
             postService.createPost(postDTO, false);
 
@@ -35,7 +36,7 @@ public class ProductController {
     }
 
     @GetMapping(value = "/followed/{userId}/list")
-    public ResponseEntity<List<PostDTO>> GetPostsByUser(@PathVariable(value = "userId") int userId,
+    public ResponseEntity<List<PostDTO>> getPostsByUser(@PathVariable(value = "userId") int userId,
                                                         @RequestParam(value = "order", defaultValue = "date_desc") String order) {
         try {
 
@@ -48,7 +49,7 @@ public class ProductController {
     }
 
     @GetMapping(value = "/{userId}/list")
-    public ResponseEntity<PostsFromUserDTO> GetPromoProductsFromUser(@PathVariable(value = "userId") Integer userId) {
+    public ResponseEntity<PostsFromUserDTO> getPromoProductsFromUser(@PathVariable(value = "userId") Integer userId) {
         User user = userService.findById(userId);
         List<Post> postList = postService.getPromoPostsFromUserById(userId);
 
@@ -56,7 +57,7 @@ public class ProductController {
     }
 
     @PostMapping(value = "/newpromopost")
-    public ResponseEntity createPromoPost(@RequestBody PostDTO postDTO) {
+    public ResponseEntity<HttpStatus> createPromoPost(@RequestBody PostDTO postDTO) {
         try {
             postService.createPost(postDTO, true);
             return ResponseEntity.ok().build();
@@ -84,7 +85,7 @@ public class ProductController {
                 return ResponseEntity.notFound().build();
             }
         } catch(Exception ignored) {}
-        return ResponseEntity.badRequest().build();
+        return ResponseEntity.status(400).build();
     }
 
 }
