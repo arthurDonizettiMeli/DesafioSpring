@@ -8,9 +8,9 @@ public class SortUtils {
     public static <T> void sort(List<T> list, String order) {
         if (order == null || order.contains("asc")) {
             list.sort(null);
-        } else {
-            list.sort(Collections.reverseOrder());
+            return;
         }
+        list.sort(Collections.reverseOrder());
     }
 
 }
