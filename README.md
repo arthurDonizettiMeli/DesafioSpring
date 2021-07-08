@@ -67,3 +67,30 @@ Sign:
   "discount": 0.25
 }
 </pre>
+
+
+## US 0015: Criar novo usuário 
+Descrição: Adicionar um novo usuario ao sistema
+
+Sign: 
+
+| Method | Sign |
+|---|---|
+| POST | /users/register |
+
+### Filtros/Parâmetros:
+
+| Parâmetros | Tipo | Descrição/Evento |
+|:---|:---:|:---|
+| username | String | Nome do usuario |
+| userType | String | Tipo do usuario |
+
+### Response:
+<pre>
+{
+  "id": 1,
+  "username": "Username",
+  "userType": "SELLER",
+  "userFollowers": null
+}
+</pre>
