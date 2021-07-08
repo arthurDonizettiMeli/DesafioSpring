@@ -67,7 +67,7 @@ public class ProductController {
         }
     }
 
-    @GetMapping(value = "/{userId}/countPromo")
+    @GetMapping(value = "/{userId}/countpromo")
     public ResponseEntity<ProductCountPromoDTO> countPromo(@PathVariable(value = "userId") int userId) {
         ProductCountPromoDTO productCountPromoDTO = postService.countPromo(userId);
         if (productCountPromoDTO == null) {
