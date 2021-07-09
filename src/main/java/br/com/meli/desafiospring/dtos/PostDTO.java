@@ -2,12 +2,9 @@ package br.com.meli.desafiospring.dtos;
 
 import br.com.meli.desafiospring.models.Post;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.util.Date;
 
 

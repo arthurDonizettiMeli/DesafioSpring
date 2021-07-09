@@ -4,7 +4,6 @@ package br.com.meli.desafiospring.dtos;
 import br.com.meli.desafiospring.models.Product;
 
 import javax.validation.constraints.NotNull;
-import java.util.Date;
 
 public class ProductDTO {
 

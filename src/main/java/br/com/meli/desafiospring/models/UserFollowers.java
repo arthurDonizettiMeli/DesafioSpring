@@ -1,7 +1,5 @@
 package br.com.meli.desafiospring.models;
 
-import br.com.meli.desafiospring.dtos.UserFollowerDTO;
-
 import javax.persistence.*;
 
 @Entity
