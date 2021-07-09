@@ -2,6 +2,10 @@ package br.com.meli.desafiospring.services;
 
 import br.com.meli.desafiospring.dtos.*;
 import br.com.meli.desafiospring.enums.UserType;
+import br.com.meli.desafiospring.exceptions.RefollowException;
+import br.com.meli.desafiospring.exceptions.SelfFollowException;
+import br.com.meli.desafiospring.exceptions.SellerFollowException;
+import br.com.meli.desafiospring.exceptions.UserNotFoundException;
 import br.com.meli.desafiospring.models.User;
 import br.com.meli.desafiospring.models.UserFollowers;
 import br.com.meli.desafiospring.repositories.UserFollowersRepository;
@@ -47,14 +51,16 @@ public class UserService {
     public boolean follow(int userId, int userIdToFollow) {
         User user = findById(userId);
 
-        if (user == null || findById(userIdToFollow) == null)
-            return false;
+        if (user == null)
+            throw new UserNotFoundException(userId);
+        if (findById(userIdToFollow) == null)
+            throw new UserNotFoundException(userIdToFollow);
         if (userId == userIdToFollow)
-            return false;
+            throw new SelfFollowException();
         if (user.getUserType().equals(UserType.SELLER))
-            return false;
+            throw new SellerFollowException();
         if (user.getUserFollowers().stream().anyMatch(u -> u.getFollowedId() == userIdToFollow))
-            return false;
+            throw new RefollowException();
         UserFollowers userFollowers = new UserFollowers(userIdToFollow, userId);
         userFollowersRepository.save(userFollowers);
         user.getUserFollowers().add(userFollowers);

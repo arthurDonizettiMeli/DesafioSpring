@@ -19,9 +19,8 @@ public class UserController {
 
   @PostMapping(value = "/{userId}/follow/{userIdToFollow}")
   public ResponseEntity<HttpStatus> follow(@PathVariable(value = "userId") int userId, @PathVariable(value = "userIdToFollow") int userIdToFollow) {
-    if (userService.follow(userId, userIdToFollow))
+      userService.follow(userId, userIdToFollow);
       return ResponseEntity.status(200).build();
-    return ResponseEntity.status(400).build();
   }
 
   @GetMapping(value = "/{userId}/followers/count/")
