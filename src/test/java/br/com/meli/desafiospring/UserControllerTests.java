@@ -190,4 +190,11 @@ public class UserControllerTests {
                 .andExpect(status().isOk());
     }
 
+    @Test
+    void test13Us0013_popularSellers() throws Exception {
+        mockMvc.perform(get("/users/popular-sellers/ranking?size={rankSize}", 5)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
 }
