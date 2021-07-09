@@ -3,6 +3,9 @@ package br.com.meli.desafiospring.dtos;
 import br.com.meli.desafiospring.models.Post;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import javax.persistence.CascadeType;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.Date;

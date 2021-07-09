@@ -49,7 +49,7 @@ public class PostsFromUserDTO {
 
   public List<Post> toPosts() {
     List<Post> postList = new ArrayList<>();
-    this.getPosts().stream().forEach(p -> {
+    this.getPosts().forEach(p -> {
       Post post = new Post();
       post.setId(p.getId_post());
       post.setDate(p.getDate());
@@ -80,7 +80,7 @@ public class PostsFromUserDTO {
     dto.setUserName(user.getUsername());
 
     List<PostFromUserDTO> postListDTO = new ArrayList<>();
-    posts.stream().forEach(p -> {
+    posts.forEach(p -> {
       PostFromUserDTO postDTO = new PostFromUserDTO();
       postDTO.setId_post(p.getId());
       postDTO.setDate(p.getDate());
@@ -90,13 +90,15 @@ public class PostsFromUserDTO {
       postDTO.setDiscount(p.getDiscount());
 
       ProductFromUserDTO productDTO = new ProductFromUserDTO();
-      postDTO.getDetail().setProduct_id(p.getProduct().getId());
-      postDTO.getDetail().setProductName(p.getProduct().getName());
-      postDTO.getDetail().setType(p.getProduct().getType());
-      postDTO.getDetail().setBrand(p.getProduct().getBrand());
-      postDTO.getDetail().setColor(p.getProduct().getColor());
-      postDTO.getDetail().setNotes(p.getProduct().getNotes());
+      productDTO.setProduct_id(p.getProduct().getId());
+      productDTO.setProductName(p.getProduct().getName());
+      productDTO.setType(p.getProduct().getType());
+      productDTO.setBrand(p.getProduct().getBrand());
+      productDTO.setColor(p.getProduct().getColor());
+      productDTO.setNotes(p.getProduct().getNotes());
       postDTO.setDetail(productDTO);
+
+      postListDTO.add(postDTO);
     });
     dto.setPosts(postListDTO);
 
