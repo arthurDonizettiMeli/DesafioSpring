@@ -1,10 +1,10 @@
 package br.com.meli.desafiospring.models;
 
 import br.com.meli.desafiospring.dtos.PostDTO;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -21,6 +21,7 @@ public class Post {
     private Integer userId;
 
     @NotNull
+    @JsonFormat(pattern = "dd-MM-yyyy")
     private Date date;
 
     @OneToOne(cascade = CascadeType.ALL)

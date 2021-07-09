@@ -1,18 +1,36 @@
 package br.com.meli.desafiospring.dtos;
 
 import br.com.meli.desafiospring.models.Post;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Date;
 
 
 public class PostDTO implements Comparable<PostDTO>{
 
+    @NotNull
     private Integer userID;
     private Integer id_post;
+
+    @NotNull
+    @JsonFormat(pattern = "dd-MM-yyyy")
     private Date date;
+
+    @Valid
+    @NotNull
     private ProductDTO detail;
+
+    @NotNull
     private Integer category;
+
+    @NotNull
     private Double price;
+
     private Boolean hasPromo;
     private Double discount;
 

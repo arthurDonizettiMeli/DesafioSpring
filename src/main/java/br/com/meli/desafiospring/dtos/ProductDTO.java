@@ -3,15 +3,26 @@ package br.com.meli.desafiospring.dtos;
 
 import br.com.meli.desafiospring.models.Product;
 
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 public class ProductDTO {
 
     private Integer product_id;
+
+    @NotNull
     private String productName;
+
+    @NotNull
     private String type;
+
+    @NotNull
     private String brand;
+
+    @NotNull
     private String color;
+
+    @NotNull
     private String notes;
 
     public ProductDTO() {

@@ -11,6 +11,8 @@ import br.com.meli.desafiospring.utils.DateUtils;
 import br.com.meli.desafiospring.utils.SortUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
