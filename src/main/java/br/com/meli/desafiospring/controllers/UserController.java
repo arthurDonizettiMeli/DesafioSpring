@@ -23,7 +23,7 @@ public class UserController {
       return ResponseEntity.status(200).build();
   }
 
-  @GetMapping(value = "/{userId}/followers/count/")
+  @GetMapping(value = "/{userId}/followers/count")
   public ResponseEntity<UserFollowersCountDTO> followersCount(@PathVariable(value = "userId") int userId) {
     return ResponseEntity.ok(userService.followersCount(userId));
   }

@@ -13,6 +13,7 @@ import br.com.meli.desafiospring.repositories.UserRepository;
 import br.com.meli.desafiospring.utils.SortUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.*;
@@ -29,11 +30,13 @@ public class UserService {
 
     public User findById(int id) {
         Optional<User> user = userRepository.findById(id);
-        return user.orElse(null);
+        if (user.isEmpty())
+            throw new UserNotFoundException(id);
+        return user.get();
     }
 
     public User save(User user) {
-        if(user.getUserType() == null || (!user.getUserType().equals(UserType.SELLER) && !user.getUserType().equals(UserType.BUYER))) {
+        if (user.getUserType() == null || (!user.getUserType().equals(UserType.SELLER) && !user.getUserType().equals(UserType.BUYER))) {
             return null;
         }
 
@@ -44,17 +47,9 @@ public class UserService {
         return (userRepository.save(newUser));
     }
 
-    public List<User> findAll() {
-        return userRepository.findAll();
-    }
-
-    public boolean follow(int userId, int userIdToFollow) {
+    public void follow(int userId, int userIdToFollow) {
         User user = findById(userId);
 
-        if (user == null)
-            throw new UserNotFoundException(userId);
-        if (findById(userIdToFollow) == null)
-            throw new UserNotFoundException(userIdToFollow);
         if (userId == userIdToFollow)
             throw new SelfFollowException();
         if (user.getUserType().equals(UserType.SELLER))
@@ -65,7 +60,6 @@ public class UserService {
         userFollowersRepository.save(userFollowers);
         user.getUserFollowers().add(userFollowers);
         userRepository.save(user);
-        return true;
     }
 
     public UserFollowersCountDTO followersCount(int userId) {
