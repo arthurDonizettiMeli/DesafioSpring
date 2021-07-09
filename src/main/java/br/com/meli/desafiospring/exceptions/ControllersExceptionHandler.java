@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 public class ControllersExceptionHandler {
 
     @ExceptionHandler({UserNotFoundException.class})
-    public ResponseEntity<ErrorDTO> handlerUserNotFound (UserNotFoundException exception) {
+    public ResponseEntity<ErrorDTO> handlerUserNotFoundException (UserNotFoundException exception) {
         ErrorDTO error = new ErrorDTO();
         error.setName("User Not Found");
         error.setErrorDetail(exception.getMessage());
@@ -84,6 +84,24 @@ public class ControllersExceptionHandler {
     public ResponseEntity<ErrorDTO> handlerUserDoesNotFollowException(UserDoesNotFollowException exception) {
         ErrorDTO error = new ErrorDTO();
         error.setName("User does not follow exception.");
+        error.setErrorDetail(exception.getMessage());
+        error.setHtttpStatusCode(400);
+        return new ResponseEntity<ErrorDTO>(error, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler({PostNotFoundException.class})
+    public ResponseEntity<ErrorDTO> handlerPostNotFoundException (PostNotFoundException exception) {
+        ErrorDTO error = new ErrorDTO();
+        error.setName("Post not found exception");
+        error.setErrorDetail(exception.getMessage());
+        error.setHtttpStatusCode(400);
+        return new ResponseEntity<ErrorDTO>(error, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler({InvalidValueException.class})
+    public ResponseEntity<ErrorDTO> handlerInvalidValueException (InvalidValueException exception) {
+        ErrorDTO error = new ErrorDTO();
+        error.setName("Invalid value exception.");
         error.setErrorDetail(exception.getMessage());
         error.setHtttpStatusCode(400);
         return new ResponseEntity<ErrorDTO>(error, HttpStatus.BAD_REQUEST);

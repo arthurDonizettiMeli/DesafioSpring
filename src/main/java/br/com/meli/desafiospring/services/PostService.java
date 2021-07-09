@@ -1,6 +1,8 @@
 package br.com.meli.desafiospring.services;
 
 import br.com.meli.desafiospring.dtos.PostDTO;
+import br.com.meli.desafiospring.exceptions.InvalidValueException;
+import br.com.meli.desafiospring.exceptions.PostNotFoundException;
 import br.com.meli.desafiospring.models.Post;
 import br.com.meli.desafiospring.dtos.ProductCountPromoDTO;
 import br.com.meli.desafiospring.models.User;
@@ -36,7 +38,7 @@ public class PostService {
         if (isPromoPost) {
             post.setHasPromo(true);
             if (post.getDiscount() == 0) {
-                throw new RuntimeException("Discount should be bigger than 0");
+                throw new InvalidValueException();
             }
         } else {
             post.setHasPromo(false);
@@ -73,9 +75,8 @@ public class PostService {
     public PostDTO updatePost(Integer postId, PostDTO postDTO) {
         Optional<Post> postOptional = postRepository.findById(postId);
 
-        if (postOptional.isEmpty()) {
-            return null;
-        }
+        if (postOptional.isEmpty())
+            throw new PostNotFoundException(postId);
 
         Post post = postOptional.get();
 
@@ -85,8 +86,8 @@ public class PostService {
         post.setDiscount(postDTO.getDiscount());
         post.setHasPromo(postDTO.getHasPromo());
 
-        if (post.getDiscount() == 0) {
-            throw new RuntimeException("Discount should be bigger than 0");
+        if (post.getHasPromo() && post.getDiscount() == 0) {
+            throw new InvalidValueException();
         }
 
         Post savedPost = postRepository.save(post);
