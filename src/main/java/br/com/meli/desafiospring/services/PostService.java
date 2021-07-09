@@ -21,6 +21,9 @@ import java.util.stream.Collectors;
 public class PostService {
 
     @Autowired
+    UserService userService;
+
+    @Autowired
     PostRepository postRepository;
 
     @Autowired
@@ -57,27 +60,12 @@ public class PostService {
     }
 
     public List<Post> getPromoPostsFromUserById(Integer userId) {
-        Optional<User> optionalUser = userRepository.findById(userId);
-        if (optionalUser.isEmpty())
-            return null;
-
-
-        List<Post> posts = postRepository.findAll();
-
-        return posts.stream().filter(e -> e.getUserId().equals(userId) && e.getHasPromo()).collect(Collectors.toList());
+        return postRepository.findAllByUserId(userId).stream().filter(Post::getHasPromo).collect(Collectors.toList());
     }
 
     public ProductCountPromoDTO countPromo(Integer userId) {
+        User user = userService.findById(userId);
         List<Post> filteredPosts = getPromoPostsFromUserById(userId);
-
-        if (filteredPosts == null)
-            return null;
-
-        Optional<User> optionalUser = userRepository.findById(userId);
-        if (optionalUser.isEmpty())
-            return null;
-
-        User user = optionalUser.get();
 
         return new ProductCountPromoDTO(userId, user.getUsername(), filteredPosts.size());
     }

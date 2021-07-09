@@ -19,8 +19,8 @@ public class UserController {
 
   @PostMapping(value = "/{userId}/follow/{userIdToFollow}")
   public ResponseEntity<HttpStatus> follow(@PathVariable(value = "userId") int userId, @PathVariable(value = "userIdToFollow") int userIdToFollow) {
-      userService.follow(userId, userIdToFollow);
-      return ResponseEntity.status(200).build();
+    userService.follow(userId, userIdToFollow);
+    return ResponseEntity.status(200).build();
   }
 
   @GetMapping(value = "/{userId}/followers/count")
@@ -30,17 +30,14 @@ public class UserController {
 
   @PostMapping(value = "/{userId}/unfollow/{userIdToUnfollow}")
   public ResponseEntity<HttpStatus> unfollow(@PathVariable(value = "userId") int userId,
-                                 @PathVariable(value = "userIdToUnfollow") int userIdToUnfollow) {
-    if (userService.unfollow(userId, userIdToUnfollow)) {
-      return ResponseEntity.status(200).build();
-    } else {
-      return ResponseEntity.status(400).build();
-    }
+                                             @PathVariable(value = "userIdToUnfollow") int userIdToUnfollow) {
+    userService.unfollow(userId, userIdToUnfollow);
+    return ResponseEntity.status(200).build();
   }
 
   @GetMapping(value = "/{userId}/followers/list")
   public ResponseEntity<UserFollowersListDTO> getFollowers(@PathVariable("userId") Integer userId,
-                                                            @RequestParam(value = "order", defaultValue = "name_asc") String order) {
+                                                           @RequestParam(value = "order", defaultValue = "name_asc") String order) {
     return ResponseEntity.ok(userService.getFollowers(userId, order));
   }
 
@@ -51,7 +48,7 @@ public class UserController {
   }
 
   @GetMapping(value = "/popular-sellers/ranking")
-  public ResponseEntity<List<UserFollowersCountDTO>> getRankedSellers(@RequestParam(value = "size", defaultValue = "10") int size){
+  public ResponseEntity<List<UserFollowersCountDTO>> getRankedSellers(@RequestParam(value = "size", defaultValue = "10") int size) {
     return ResponseEntity.ok(userService.getRankedSellers(size));
   }
 
@@ -59,7 +56,7 @@ public class UserController {
   public ResponseEntity<User> registerNewUser(@RequestBody User user) {
     User saveUser = userService.save(user);
 
-    if(saveUser == null) {
+    if (saveUser == null) {
       return ResponseEntity.status(400).build();
     }
 

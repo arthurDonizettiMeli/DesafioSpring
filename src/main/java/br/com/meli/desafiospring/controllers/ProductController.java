@@ -47,21 +47,13 @@ public class ProductController {
 
   @PostMapping(value = "/newpromopost")
   public ResponseEntity<HttpStatus> createPromoPost(@RequestBody PostDTO postDTO) {
-    try {
-      postService.createPost(postDTO, true);
-      return ResponseEntity.ok().build();
-
-    } catch (Exception exception) {
-      return ResponseEntity.status(400).build();
-    }
+    postService.createPost(postDTO, true);
+    return ResponseEntity.ok().build();
   }
 
   @GetMapping(value = "/{userId}/countpromo")
   public ResponseEntity<ProductCountPromoDTO> countPromo(@PathVariable(value = "userId") int userId) {
     ProductCountPromoDTO productCountPromoDTO = postService.countPromo(userId);
-    if (productCountPromoDTO == null) {
-      return ResponseEntity.notFound().build();
-    }
     return ResponseEntity.ok(productCountPromoDTO);
   }
 

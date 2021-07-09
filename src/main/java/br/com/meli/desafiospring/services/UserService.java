@@ -2,10 +2,7 @@ package br.com.meli.desafiospring.services;
 
 import br.com.meli.desafiospring.dtos.*;
 import br.com.meli.desafiospring.enums.UserType;
-import br.com.meli.desafiospring.exceptions.RefollowException;
-import br.com.meli.desafiospring.exceptions.SelfFollowException;
-import br.com.meli.desafiospring.exceptions.SellerFollowException;
-import br.com.meli.desafiospring.exceptions.UserNotFoundException;
+import br.com.meli.desafiospring.exceptions.*;
 import br.com.meli.desafiospring.models.User;
 import br.com.meli.desafiospring.models.UserFollowers;
 import br.com.meli.desafiospring.repositories.UserFollowersRepository;
@@ -99,26 +96,19 @@ public class UserService {
         return (new UserFollowedListDTO(userId, findById(userId).getUsername(), followers));
     }
 
-    public boolean unfollow(Integer followerId, Integer followedId) {
-        Optional<User> optionalFollower = userRepository.findById(followerId);
-        if (optionalFollower.isEmpty())
-            return false;
-
-        Optional<User> optionalFollowed = userRepository.findById(followedId);
-        if (optionalFollowed.isEmpty())
-            return false;
+    public void unfollow(Integer followerId, Integer followedId) {
+        User follower = findById(followerId);
+        findById(followedId);
 
         Optional<UserFollowers> optionalFollow = userFollowersRepository.getUserFollowersByFollowerIdAndFollowedId(followerId, followedId);
         if (optionalFollow.isEmpty())
-            return false;
+            throw new UserDoesNotFollowException();
 
-        User follower = optionalFollower.get();
         follower.getUserFollowers().removeIf(e -> e.getFollowedId().equals(followedId));
         userRepository.save(follower);
 
         UserFollowers follow = optionalFollow.get();
         userFollowersRepository.delete(follow);
-        return true;
     }
 
     public List<UserFollowersCountDTO> getRankedSellers(int size) {

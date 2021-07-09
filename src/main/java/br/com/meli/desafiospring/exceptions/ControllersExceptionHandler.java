@@ -80,4 +80,12 @@ public class ControllersExceptionHandler {
         return new ResponseEntity<ErrorDTO>(error, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler({UserDoesNotFollowException.class})
+    public ResponseEntity<ErrorDTO> handlerUserDoesNotFollowException(UserDoesNotFollowException exception) {
+        ErrorDTO error = new ErrorDTO();
+        error.setName("User does not follow exception.");
+        error.setErrorDetail(exception.getMessage());
+        error.setHtttpStatusCode(400);
+        return new ResponseEntity<ErrorDTO>(error, HttpStatus.BAD_REQUEST);
+    }
 }
