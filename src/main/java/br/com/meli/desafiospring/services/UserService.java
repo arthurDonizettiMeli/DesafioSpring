@@ -33,10 +33,6 @@ public class UserService {
     }
 
     public User save(User user) {
-        if (user.getUserType() == null || (!user.getUserType().equals(UserType.SELLER) && !user.getUserType().equals(UserType.BUYER))) {
-            return null;
-        }
-
         User newUser = new User();
         newUser.setUsername(user.getUsername());
         newUser.setUserType(user.getUserType());

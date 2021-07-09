@@ -46,7 +46,7 @@ public class ProductController {
   }
 
   @PostMapping(value = "/newpromopost")
-  public ResponseEntity<HttpStatus> createPromoPost(@RequestBody PostDTO postDTO) {
+  public ResponseEntity<HttpStatus> createPromoPost(@Valid @RequestBody PostDTO postDTO) {
     postService.createPost(postDTO, true);
     return ResponseEntity.ok().build();
   }
@@ -58,7 +58,7 @@ public class ProductController {
   }
 
   @PatchMapping("/editpost/{postId}")
-  public ResponseEntity<PostDTO> changeToPromoPost(@PathVariable Integer postId, @RequestBody PostDTO postDTO) {
+  public ResponseEntity<PostDTO> changeToPromoPost(@PathVariable Integer postId, @Valid @RequestBody PostDTO postDTO) {
       PostDTO post = postService.updatePost(postId, postDTO);
       return ResponseEntity.ok(post);
   }
